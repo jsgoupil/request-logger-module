@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <system.web>
+    <httpModules>
+      <add name="RequestLoggerModule" type="$rootnamespace$.MyRequestLoggerModule"/>
+    </httpModules>
+  </system.web>
+  <system.webServer>
+    <validation validateIntegratedModeConfiguration="false"/>
+    <modules>
+      <add name="RequestLoggerModule" type="$rootnamespace$.MyRequestLoggerModule"/>
+    </modules>
+  </system.webServer>
+</configuration>
