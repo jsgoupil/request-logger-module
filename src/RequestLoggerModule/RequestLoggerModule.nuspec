@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright (c) 2015 Jean-Sébastien Goupil</copyright>
-    <tags>quickbooks qbxml</tags>
+    <tags>httpmodule log request response</tags>
   </metadata>
   <files>
     <file src="Content\*.*" target="Content" />
