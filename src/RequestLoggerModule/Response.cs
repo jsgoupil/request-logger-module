@@ -23,7 +23,7 @@ namespace NoiseBakery.RequestLogger
         /// <summary>
         /// List of headers key/value pair sent from the server.
         /// </summary>
-        public Dictionary<string, string> Headers { get; set; }
+        public System.Collections.Specialized.NameValueCollection Headers { get; set; }
 
         /// <summary>
         /// Response body sent back to the client.

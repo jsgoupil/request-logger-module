@@ -24,6 +24,17 @@ namespace NoiseBakery.RequestLogger
         private const string EXTRA_KEY = "RequestLoggerModule.Extra";
 
         /// <summary>
+        /// Indicates to capture the response body.
+        /// </summary>
+        public virtual bool CaptureResponseBody
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Initializes the class.
         /// </summary>
         /// <param name="context"></param>
@@ -47,12 +58,15 @@ namespace NoiseBakery.RequestLogger
         /// <param name="e">Event.</param>
         private void BeginRequest(object sender, EventArgs e)
         {
-            var application = (HttpApplication)sender;
-            var response = application.Response;
-            var filter = new OutputFilterStream(response.Filter);
-            response.Filter = filter;
+            if (CaptureResponseBody)
+            {
+                var application = (HttpApplication)sender;
+                var response = application.Response;
+                var filter = new OutputFilterStream(response.Filter);
+                response.Filter = filter;
 
-            application.Request.RequestContext.HttpContext.Items[FILTER_KEY] = filter;
+                application.Request.RequestContext.HttpContext.Items[FILTER_KEY] = filter;
+            }
         }
 
         /// <summary>
@@ -77,14 +91,14 @@ namespace NoiseBakery.RequestLogger
                     Method = request.HttpMethod,
                     RawUrl = request.RawUrl,
                     ServerProtocol = request.ServerVariables["SERVER_PROTOCOL"],
-                    Headers = ReadHeaders(request.Headers),
+                    Headers = request.Headers,
                     Body = new StreamReader(request.InputStream).ReadToEnd(),
                 },
                 Response = new Response
                 {
                     StatusCode = response.StatusCode,
                     StatusDescription = response.StatusDescription,
-                    Headers = ReadHeaders(response.Headers),
+                    Headers = response.Headers,
                     Body = filter != null ? filter.ReadStream() : null
                 },
                 Extra = extra
@@ -94,18 +108,6 @@ namespace NoiseBakery.RequestLogger
             request.InputStream.Seek(0, SeekOrigin.Begin);
 
             SaveLogEntry(logEntry, request, response);
-        }
-
-        /// <summary>
-        /// Reads the header and make it a Dictionary.
-        /// </summary>
-        /// <param name="nameValueCollection">Headers.</param>
-        /// <returns>Dictionary with key/value pairs.</returns>
-        private Dictionary<string, string> ReadHeaders(System.Collections.Specialized.NameValueCollection nameValueCollection)
-        {
-            return nameValueCollection.AllKeys
-                .Select(m => new KeyValuePair<string, string>(m, nameValueCollection[m]))
-                .ToDictionary(m => m.Key, m => m.Value);
         }
 
         /// <summary>

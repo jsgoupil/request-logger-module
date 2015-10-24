@@ -28,7 +28,7 @@ namespace NoiseBakery.RequestLogger
         /// <summary>
         /// List of headers key/value pair sent from the client.
         /// </summary>
-        public Dictionary<string, string> Headers { get; set; }
+        public System.Collections.Specialized.NameValueCollection Headers { get; set; }
 
         /// <summary>
         /// Request body, used for POST, PATCH, etc.
