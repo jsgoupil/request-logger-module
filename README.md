@@ -25,6 +25,15 @@ Add some code in `MyRequestLoggerModule.cs` in order to save the log entry to yo
 ```C#
 public class MyRequestLoggerModule : RequestLoggerModule
 {
+  public override bool CaptureRequestBody
+  {
+    get
+    {
+      // Performance hit.
+      return true;
+    }
+  }
+
   public override bool CaptureResponseBody
   {
     get
@@ -44,9 +53,9 @@ public class MyRequestLoggerModule : RequestLoggerModule
 }
 ```
 
-You can activate the `CaptureResponseBody` if you want to save it to your database. However, keep in mind
-that it makes a copy of the actual response body before it is sent to the client. Which will incur
-a performance hit.
+You can activate the `CaptureRequestBody` and `CaptureResponseBody` if you want to tell the module to capture them.
+However, keep in mind that it makes a copy of the actual request and response body before it is sent to the client.
+This will incur a performance hit.
 
 ## Extra data ##
 

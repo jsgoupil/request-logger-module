@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright (c) 2015 Jean-Sébastien Goupil</copyright>
-    <tags>httpmodule log request response</tags>
+    <tags>httpmodule log logging tracing request response</tags>
   </metadata>
   <files>
     <file src="Content\*.*" target="Content" />

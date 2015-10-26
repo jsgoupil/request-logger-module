@@ -47,7 +47,6 @@ namespace NoiseBakery.RequestLogger
             }
         }
 
-
         public override bool CanRead
         {
             get { return this.InnerStream.CanRead; }

@@ -24,6 +24,17 @@ namespace NoiseBakery.RequestLogger
         private const string EXTRA_KEY = "RequestLoggerModule.Extra";
 
         /// <summary>
+        /// Indicates to capture the request body.
+        /// </summary>
+        public virtual bool CaptureRequestBody
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Indicates to capture the response body.
         /// </summary>
         public virtual bool CaptureResponseBody
@@ -92,7 +103,7 @@ namespace NoiseBakery.RequestLogger
                     RawUrl = request.RawUrl,
                     ServerProtocol = request.ServerVariables["SERVER_PROTOCOL"],
                     Headers = request.Headers,
-                    Body = new StreamReader(request.InputStream).ReadToEnd(),
+                    Body = CaptureRequestBody ? new StreamReader(request.InputStream).ReadToEnd() : null,
                 },
                 Response = new Response
                 {

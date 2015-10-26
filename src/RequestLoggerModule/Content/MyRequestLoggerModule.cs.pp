@@ -9,6 +9,18 @@ namespace $rootnamespace$
     class MyRequestLoggerModule : NoiseBakery.RequestLogger.RequestLoggerModule
     {
         /// <summary>
+        /// Tells the module to capture the request body.
+        /// </summary>
+        public override bool CaptureRequestBody
+        {
+            get
+            {
+                // Set it to true if you want to capture the request body.
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Tells the module to capture the response body.
         /// </summary>
         public override bool CaptureResponseBody
