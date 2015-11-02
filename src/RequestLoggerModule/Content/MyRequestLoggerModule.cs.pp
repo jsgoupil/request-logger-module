@@ -9,35 +9,35 @@ namespace $rootnamespace$
     class MyRequestLoggerModule : NoiseBakery.RequestLogger.RequestLoggerModule
     {
         /// <summary>
-        /// Tells the module to capture the request body.
+        /// Indicates to capture the request body.
         /// </summary>
-        public override bool CaptureRequestBody
+        /// <param name="request">Request.</param>
+        /// <returns>True to capture the request. False otherwise.</returns>
+        public override bool ShouldCaptureRequestBody(HttpRequest request)
         {
-            get
-            {
-                // Set it to true if you want to capture the request body.
-                return false;
-            }
+            // Set it to true if you want to capture the request body.
+            return false;
         }
 
         /// <summary>
-        /// Tells the module to capture the response body.
+        /// Indicates to capture the response body.
         /// </summary>
-        public override bool CaptureResponseBody
+        /// <param name="request">Request.</param>
+        /// <returns>True to capture the response. False otherwise.</returns>
+        public override bool ShouldCaptureResponseBody(HttpRequest request)
         {
-            get
-            {
-                // Set it to true if you want to capture the response body.
-                return false;
-            }
+            // Set it to true if you want to capture the response body.
+            return false;
         }
 
         protected override void SaveLogEntry(NoiseBakery.RequestLogger.LogEntry logEntry, HttpRequest request, HttpResponse response)
         {
             // Add some code in order to save to your database.
-            ////var db = new ApplicationDbContext();
-            ////db.Log.Add(logEntry);
-            ////db.SaveChanges();
+            ////using (var db = new ApplicationDbContext())
+            ////{
+            ////    db.Log.Add(logEntry);
+            ////    db.SaveChanges();
+            ////}
         }
     }
 }

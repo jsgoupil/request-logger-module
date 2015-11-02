@@ -25,22 +25,16 @@ Add some code in `MyRequestLoggerModule.cs` in order to save the log entry to yo
 ```C#
 public class MyRequestLoggerModule : RequestLoggerModule
 {
-  public override bool CaptureRequestBody
+  public virtual bool ShouldCaptureRequestBody(HttpRequest request)
   {
-    get
-    {
-      // Performance hit.
-      return true;
-    }
+    // Performance Hit.
+    return true;
   }
 
-  public override bool CaptureResponseBody
+  public virtual bool ShouldCaptureResponseBody(HttpRequest request)
   {
-    get
-    {
-      // Performance hit.
-      return true;
-    }
+    // Performance Hit.
+    return true;
   }
 
   protected override void SaveLogEntry(LogEntry logEntry, HttpRequest request, HttpResponse response)
@@ -53,7 +47,7 @@ public class MyRequestLoggerModule : RequestLoggerModule
 }
 ```
 
-You can activate the `CaptureRequestBody` and `CaptureResponseBody` if you want to tell the module to capture them.
+You can return `true` from the `ShouldCaptureRequestBody` and `ShouldCaptureResponseBody` method, if you want to tell the module to capture them.
 However, keep in mind that it makes a copy of the actual request and response body before it is sent to the client.
 This will incur a performance hit.
 

@@ -26,23 +26,21 @@ namespace NoiseBakery.RequestLogger
         /// <summary>
         /// Indicates to capture the request body.
         /// </summary>
-        public virtual bool CaptureRequestBody
+        /// <param name="request">Request.</param>
+        /// <returns>True to capture the request. False otherwise.</returns>
+        public virtual bool ShouldCaptureRequestBody(HttpRequest request)
         {
-            get
-            {
-                return false;
-            }
+            return false;
         }
 
         /// <summary>
         /// Indicates to capture the response body.
         /// </summary>
-        public virtual bool CaptureResponseBody
+        /// <param name="request">Request.</param>
+        /// <returns>True to capture the response. False otherwise.</returns>
+        public virtual bool ShouldCaptureResponseBody(HttpRequest request)
         {
-            get
-            {
-                return false;
-            }
+            return false;
         }
 
         /// <summary>
@@ -69,9 +67,9 @@ namespace NoiseBakery.RequestLogger
         /// <param name="e">Event.</param>
         private void BeginRequest(object sender, EventArgs e)
         {
-            if (CaptureResponseBody)
+            var application = (HttpApplication)sender;
+            if (ShouldCaptureResponseBody(application.Request))
             {
-                var application = (HttpApplication)sender;
                 var response = application.Response;
                 var filter = new OutputFilterStream(response.Filter);
                 response.Filter = filter;
@@ -103,7 +101,7 @@ namespace NoiseBakery.RequestLogger
                     RawUrl = request.RawUrl,
                     ServerProtocol = request.ServerVariables["SERVER_PROTOCOL"],
                     Headers = request.Headers,
-                    Body = CaptureRequestBody ? new StreamReader(request.InputStream).ReadToEnd() : null,
+                    Body = ShouldCaptureRequestBody(request) ? new StreamReader(request.InputStream).ReadToEnd() : null,
                 },
                 Response = new Response
                 {
