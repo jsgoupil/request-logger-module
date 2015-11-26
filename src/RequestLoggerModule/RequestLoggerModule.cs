@@ -24,6 +24,11 @@ namespace NoiseBakery.RequestLogger
         private const string EXTRA_KEY = "RequestLoggerModule.Extra";
 
         /// <summary>
+        /// Saved request body.
+        /// </summary>
+        private string savedRequest;
+
+        /// <summary>
         /// Indicates to capture the request body.
         /// </summary>
         /// <param name="request">Request.</param>
@@ -68,6 +73,12 @@ namespace NoiseBakery.RequestLogger
         private void BeginRequest(object sender, EventArgs e)
         {
             var application = (HttpApplication)sender;
+            if (ShouldCaptureRequestBody(application.Request))
+            {
+                savedRequest = new StreamReader(application.Request.InputStream).ReadToEnd();
+                application.Request.InputStream.Seek(0, SeekOrigin.Begin);
+            }
+
             if (ShouldCaptureResponseBody(application.Request))
             {
                 var response = application.Response;
@@ -101,7 +112,7 @@ namespace NoiseBakery.RequestLogger
                     RawUrl = request.RawUrl,
                     ServerProtocol = request.ServerVariables["SERVER_PROTOCOL"],
                     Headers = request.Headers,
-                    Body = ShouldCaptureRequestBody(request) ? new StreamReader(request.InputStream).ReadToEnd() : null,
+                    Body = savedRequest,
                 },
                 Response = new Response
                 {
