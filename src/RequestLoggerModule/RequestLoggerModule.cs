@@ -124,9 +124,6 @@ namespace NoiseBakery.RequestLogger
                 Extra = extra
             };
 
-            // Let's rewind the request stream.
-            request.InputStream.Seek(0, SeekOrigin.Begin);
-
             SaveLogEntry(logEntry, request, response);
         }
 
