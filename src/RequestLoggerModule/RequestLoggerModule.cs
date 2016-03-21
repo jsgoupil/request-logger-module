@@ -73,6 +73,7 @@ namespace NoiseBakery.RequestLogger
         private void BeginRequest(object sender, EventArgs e)
         {
             var application = (HttpApplication)sender;
+            savedRequest = null;
             if (ShouldCaptureRequestBody(application.Request))
             {
                 savedRequest = new StreamReader(application.Request.InputStream).ReadToEnd();
